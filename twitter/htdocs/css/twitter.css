@@ -1,0 +1,13 @@
+div.twitter-content {
+    position: absolute;
+    right: -5px;
+    top: 52px;
+}
+
+div.twitter-link i.blink {
+    animation: blink 1s linear infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
