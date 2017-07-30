@@ -2,7 +2,7 @@
 
 ### Requirements
 
-You need Prewikka 3.0.0 or higher.
+You need Prewikka 4.0.0 or higher.
 
 ### Source
 
@@ -14,13 +14,15 @@ The git repo for Prewikka apps is available on [GitHub](https://github.com/Prelu
 
 Once the source code downloaded:
 
-    cd prewikka-apps-twitter
-    cheetah-compile */templates/*.tmpl
     python setup.py install
 
-Then restart Prewikka.
+Configure /etc/prewikka/prewikka.conf and add this for PreludeSIEM twitter account:
 
-Depending on the app, you may need to activate it by visiting the Settings > Plugins page.
+    [twitter]
+    account: PreludeSIEM
+    widget-id: 721615793658728448
+
+Then restart Prewikka.
 
 ### License
 
