@@ -16,8 +16,8 @@ $(document).ready(function() {
 
 <div class="twitter-content" style="display:none">
     <a class="twitter-timeline"
-      data-widget-id="${ env.config.twitter.get('widget-id') }"
-      href="https://twitter.com/${ env.config.twitter.get('account') } "
+      data-widget-id="${widget_id}"
+      href="https://twitter.com/${account}"
       width="300">
     </a>
 

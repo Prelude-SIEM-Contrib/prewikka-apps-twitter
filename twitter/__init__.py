@@ -5,25 +5,29 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import pkg_resources
 
-from prewikka import version, view, template, hookmanager, error, resource
+from prewikka import error, hookmanager, pluginmanager, resource, template
+
 
 """A Twitter plugin"""
 
-class Twitter(view.View):
+class Twitter(pluginmanager.PluginBase):
     plugin_name = "Twitter notification"
     plugin_author = "Antoine Luong"
-    plugin_license = version.__license__
-    plugin_version = version.__version__
-    plugin_copyright = version.__copyright__
-    plugin_description = N_("Twitter notification plugin")
+    plugin_license = "GPL"
+    plugin_version = "5.0.0"
+    plugin_copyright = "CSSI"
+    plugin_description = "Twitter notification plugin"
     plugin_htdocs = (("twitter", pkg_resources.resource_filename(__name__, 'htdocs')),)
 
     def __init__(self):
-        view.View.__init__(self)
-        if not env.config.get('twitter', {}) or not env.config.twitter.get('account') or not env.config.twitter.get('widget-id'):
-            raise error.PrewikkaUserError(N_("Twitter configuration"), N_("Twitter plugin disabled: not configured"))
+        self._account = env.config.twitter.get("account")
+        self._widget_id = env.config.twitter.get("widget-id")
+        if not self._account or not self._widget_id:
+            raise error.PrewikkaUserError("Missing configuration", "Twitter plugin disabled: not configured")
 
-        hookmanager.register("HOOK_TOPLAYOUT_EXTRA_CONTENT", self._toplayout_extra_content_hook)
+        pluginmanager.PluginBase.__init__(self)
 
+    @hookmanager.register("HOOK_TOPLAYOUT_EXTRA_CONTENT")
     def _toplayout_extra_content_hook(self):
-        return resource.HTMLSource(template.PrewikkaTemplate(__name__, "templates/twitter.mak").render())
+        tmpl = template.PrewikkaTemplate(__name__, "templates/twitter.mak")
+        return resource.HTMLSource(tmpl.render(account=self._account, widget_id=self._widget_id))
